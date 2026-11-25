@@ -71,7 +71,7 @@ def card_data_random(fake) -> dict[str, str]:
     month, year = expire.split("/")
 
     return {
-        "number": fake.credit_card_number(),
+        "number": "4444 4444 4444 4445",
         "month": month,                # "09"
         "year": year,                  # "28"
         "holder": fake.name().upper(), # "IVAN PETROV"
