@@ -1,10 +1,12 @@
 
-from playwright.sync_api import Page, Locator
+from playwright.sync_api import Page, Locator, expect
 
 
 class MainPage:
     def __init__(self, page: Page):
         self.page = page
+
+        self.main_header = self.page.locator(".heading", has_text="Путешествие дня")
 
     def open(self):
         self.page.goto("http://localhost:8080/")
@@ -31,7 +33,15 @@ class CardFormPage:
 
 
         # Сообщения об ошибках
-       # self._error_messages: Locator = page.locator(self._ERROR_MESSAGE_FIELD_SELECTOR)
+
+        self._input__subs: Locator = page.locator(self._ERROR_MESSAGE_FIELD_SELECTOR)
+
+        self.card_number_field_error = self._input__subs.nth(0)
+        self.month_field_error = self._input__subs.nth(1)
+        self.year_field_error = self._input__subs.nth(2)
+        self.card_holder_field_error = self._input__subs.nth(3)
+        self.cvc_field_error = self._input__subs.nth(4)
+
 
 
         # Заголовок и кнопка
@@ -54,27 +64,30 @@ class CardFormPage:
         self.credit_button.click()
 
     def fill_card_data(self, data: dict):
-        self.card_number_field.fill(data["number"])
-        self.card_month_field.fill(data["month"])
-        self.card_year_field.fill(data["year"])
-        self.card_holder_field.fill(data["holder"])
-        self.card_cvc_field.fill(data["cvc"])
+        if "number" in data:
+            self.card_number_field.fill(data["number"])
+        if "month" in data:
+            self.card_month_field.fill(data["month"])
+        if "year" in data:
+            self.card_year_field.fill(data["year"])
+        if "holder" in data:
+            self.card_holder_field.fill(data["holder"])
+        if "cvc" in data:
+            self.card_cvc_field.fill(data["cvc"])
+
+    # def error_for(self, field: str):
+    #     locators = {
+    #         "number": self.card_number_field_error,
+    #         "month": self.month_field_error,
+    #         "year": self.year_field_error,
+    #         "holder": self.card_holder_field_error,
+    #         "cvc": self.cvc_field_error,
+    #     }
+    #     return locators[field]
 
     def submit(self):
         self.submit_button.click()
 
-    # def should_see_error_empty_form(self):
-    #     expect(self._error_messages.nth(0)).to_have_text("Неверный формат")
-    #     expect(self._error_messages.nth(1)).to_have_text("Неверный формат")
-    #     expect(self._error_messages.nth(2)).to_have_text("Неверный формат")
-    #     expect(self._error_messages.nth(3)).to_have_text("Поле обязательно для заполнения")
-    #     expect(self._error_messages.nth(4)).to_have_text("Неверный формат")
-    #
-    # def should_see_error_invalid_number(self):
-    #     expect(self._error_messages.nth(0)).to_have_text("Неверный формат")
-    #
-    # def should_see_error_invalid_month(self):
-    #     expect(self._error_messages.nth(1)).to_have_text("Неверный формат")
 
 
 

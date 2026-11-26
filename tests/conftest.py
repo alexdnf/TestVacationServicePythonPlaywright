@@ -50,6 +50,23 @@ def card_data_valid_number(fake) -> dict[str, str]:
         "cvc": fake.credit_card_security_code(),
     }
 
+# @pytest.fixture
+# def card_data_valid_number(fake):
+#     def _make(exclude: str | None = None) -> dict[str, str]:
+#         expire = fake.credit_card_expire(start="now", end="+5y", date_format="%m/%y")
+#         month, year = expire.split("/")
+#         data = {
+#             "number": "4444 4444 4444 4441",
+#             "month": month,
+#             "year": year,
+#             "holder": fake.name().upper(),
+#             "cvc": fake.credit_card_security_code(),
+#         }
+#         if exclude:
+#             data.pop(exclude)
+#         return data
+#     return _make
+
 @pytest.fixture
 def card_data_blacklist_number(fake) -> dict[str, str]:
     # срок действия: от сегодня до +5 лет
@@ -71,7 +88,7 @@ def card_data_random(fake) -> dict[str, str]:
     month, year = expire.split("/")
 
     return {
-        "number": "4444 4444 4444 4445",
+        "number": fake.numerify("#### #### #### ####"),
         "month": month,                # "09"
         "year": year,                  # "28"
         "holder": fake.name().upper(), # "IVAN PETROV"
